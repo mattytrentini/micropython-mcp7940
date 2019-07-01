@@ -10,14 +10,14 @@ class I2CTester:
         print("Read: {}: start at {}, length {}".format(address, start, length))
         if not set(list(range(start, length))).issubset(self.register_data.keys()):
             raise IndexError
-        return bytes([self.register_data[i] for i in range(length)])
+        return bytes([self.register_data[start + i] for i in range(length)])
 
     def writeto_mem(self, address, start, bytes_to_write):
-        # print(
-        #     "Write: {}: start at {}, bytes: {} ({})".format(
-        #         address, start, bytes_to_write.hex(), len(bytes_to_write)
-        #     )
-        # )
+        print(
+            "Write: {}: start at {}, bytes: {} ({})".format(
+                address, start, bytes_to_write.hex(), len(bytes_to_write)
+            )
+        )
         for i, b in enumerate(bytes_to_write):
             self.register_data[start + i] = b
 
@@ -222,3 +222,24 @@ class TestMcp(unittest.TestCase):
 
         mcp.time = now
         self.assertEqual(mcp.time, now[:-1] + (0,))  # Return 0 for day of year
+
+    def test_alarms(self):
+        i2c_tester = I2CTester()
+        mcp = mcp7940.MCP7940(i2c_tester)
+
+        now = (
+            2019,
+            7,
+            16,
+            15,
+            29,
+            14,
+            6,
+            167,
+        )  # Sunday 2019/7/16 3:29:14pm (yearday=167)
+
+        mcp.alarm1 = now
+        self.assertEqual(mcp.alarm1, now[1:-1])  # Drop year and yearday
+
+        mcp.alarm2 = now
+        self.assertEqual(mcp.alarm2, now[1:-1])  # Drop year and yearday
