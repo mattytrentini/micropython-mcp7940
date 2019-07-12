@@ -1,4 +1,4 @@
-# from micropython import const
+from micropython import const
 
 
 class MCP7940:
@@ -15,7 +15,7 @@ class MCP7940:
             mcp.time = utime.localtime() # Set the MCP7940 with the system time
     """
 
-    ADDRESS = 0x6F  # const(0x6F)
+    ADDRESS = const(0x6F)
     RTCSEC = 0x00  # RTC seconds register
     ST = 7  # Status bit
     RTCWKDAY = 0x03  # RTC Weekday register
@@ -140,8 +140,8 @@ class MCP7940:
         print(reg_filter)
         t = [MCP7940.bcd_to_int(reg & filt) for reg, filt in zip(time_reg, reg_filter)]
         # Reorder
-        t = (t[5], t[4], t[2], t[1], t[0], t[3] - 1)
-        t = (t[6] + 2000,) + t + (0,) if num_registers == 7 else t
+        t2 = (t[5], t[4], t[2], t[1], t[0], t[3] - 1)
+        t = (t[6] + 2000,) + t2 + (0,) if num_registers == 7 else t2
         # now = (2019, 7, 16, 15, 29, 14, 6, 167)  # Sunday 2019/7/16 3:29:14pm (yearday=167)
         # year, month, date, hours, minutes, seconds, weekday, yearday = t
         # time_reg = [seconds, minutes, hours, weekday, date, month, year % 100]

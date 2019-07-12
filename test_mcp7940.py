@@ -201,7 +201,7 @@ class TestMcp(unittest.TestCase):
             2396,
             2400,
         ]
-        leap_years = [y for y in range(1800, 2401) if mcp9740.MCP7940.is_leap_year(y)]
+        leap_years = [y for y in range(1800, 2401) if mcp7940.MCP7940.is_leap_year(y)]
         self.assertEqual(known_leap_years, leap_years)
         print(len(known_leap_years), len(leap_years))
 
