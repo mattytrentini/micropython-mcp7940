@@ -1,0 +1,7 @@
+{
+  "urls": [
+    ["mcp7940.py", "github:mattytrentini/micropython-mcp7940/mcp7940.py"]
+  ],
+  "version": "1.0.0",
+  "deps": []
+}
